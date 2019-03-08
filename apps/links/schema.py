@@ -13,11 +13,23 @@ class VoteType(DjangoObjectType):
         model = Vote
 
 class Query(graphene.ObjectType):
-    links = graphene.List(LinkType)
+    links = graphene.List(
+                    LinkType,
+                    first = graphene.Int(),
+                    skip = graphene.Int(),
+                )
     votes = graphene.List(VoteType)
 
-    def resolve_links(self, info, **kwargs):
-        return Link.objects.all()
+    def resolve_links(self, info, first = None, skip = None, **kwargs):
+        links = Link.objects.all()
+
+        if skip:
+            links = links[skip:]
+
+        if first:
+            links = links[:first]
+
+        return links
 
     def resolve_votes(self, info, **kwargs):
         return Vote.objects.all()
