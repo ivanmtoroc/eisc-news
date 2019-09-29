@@ -4,6 +4,7 @@ import graphql_jwt
 from apps.links import schema as links_schema
 from apps.users import schema as users_schema
 
+
 class Query(
         links_schema.Query,
         users_schema.Query,

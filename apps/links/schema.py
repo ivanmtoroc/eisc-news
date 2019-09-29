@@ -4,13 +4,16 @@ from graphene_django import DjangoObjectType
 from apps.users.schema import UserType
 from .models import Link, Vote
 
+
 class LinkType(DjangoObjectType):
     class Meta:
         model = Link
 
+
 class VoteType(DjangoObjectType):
     class Meta:
         model = Vote
+
 
 class Query(graphene.ObjectType):
     links = graphene.List(
@@ -33,6 +36,7 @@ class Query(graphene.ObjectType):
 
     def resolve_votes(self, info, **kwargs):
         return Vote.objects.all()
+
 
 class CreateLink(graphene.Mutation):
     id = graphene.Int()
@@ -61,6 +65,7 @@ class CreateLink(graphene.Mutation):
             posted_by = link.posted_by,
         )
 
+
 class CreateVote(graphene.Mutation):
     user = graphene.Field(UserType)
     link = graphene.Field(LinkType)
@@ -83,6 +88,7 @@ class CreateVote(graphene.Mutation):
         )
 
         return CreateVote(user = user, link = link)
+
 
 class Mutation(graphene.ObjectType):
     create_link = CreateLink.Field()

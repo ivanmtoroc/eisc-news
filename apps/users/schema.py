@@ -8,6 +8,7 @@ class UserType(DjangoObjectType):
     class Meta:
         model = get_user_model()
 
+
 class Query(graphene.ObjectType):
     users = graphene.List(UserType)
     me = graphene.Field(UserType)
@@ -20,6 +21,7 @@ class Query(graphene.ObjectType):
         if user.is_anonymous:
             raise Exception('Not logged in!')
         return user
+
 
 class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
@@ -38,6 +40,7 @@ class CreateUser(graphene.Mutation):
         user.save()
 
         return CreateUser(user = user)
+
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
